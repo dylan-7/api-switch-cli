@@ -1,0 +1,40 @@
+{
+  "name": "api-switch-cli",
+  "version": "0.1.2",
+  "description": "api-switch-cli",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylan-7/api-switch-cli.git"
+  },
+  "keywords": [
+    "webpack",
+    "plugin",
+    "webpack-plugin",
+    "define-webpack-plugin",
+    "json",
+    "javascript"
+  ],
+  "bin": {
+    "api-switch-cli": "bin/index.js"
+  },
+  "author": "Dylan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dylan-7/api-switch-cli/issues"
+  },
+  "homepage": "https://github.com/dylan-7/api-switch-cli/#readme",
+  "dependencies": {
+    "commander": "4.0.1",
+    "cross-env": "^6.0.3",
+    "cross-spawn": "^7.0.1",
+    "inquirer": "^7.0.0"
+  },
+  "peerDependencies": {
+    "webpack": "*",
+    "webpack-dev-server": "*"
+  }
+}
