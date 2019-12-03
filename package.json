@@ -1,6 +1,6 @@
 {
   "name": "api-switch-cli",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "api-switch-cli",
   "main": "bin/index.js",
   "scripts": {
