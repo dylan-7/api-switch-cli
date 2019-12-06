@@ -3,6 +3,7 @@
 /**
  * @file index
  * @author dylan
+ * @time 12/06/2019
  */
 
  var fs = require('fs');
@@ -13,28 +14,36 @@
  var boxen = require('boxen');
  
  /**
-  *
-  * @param {Object} option {dev: 'https:www.xx.com'}
-  * @param {Array} action [] command
-  */
- var apiSwitchCli = function(option, action) {
-   fs.readFile(path.resolve('package.json'), 'utf-8', function(error, data) {
+    *
+    * @param {Object} option {dev: 'https:www.xx.com'}
+    * @param {Array} action [] command
+    */
+ var apiSwitchCli = function(action) {
+   fs.readFile(path.resolve('package.json'), 'utf-8',
+   function(error, data) {
      var packageJson = JSON.parse(data);
+     var config = packageJson['api-switch-cli'];
+     var configKeys = [];
  
-     console.log(boxen(chalk.magenta(packageJson.name + '\n' + packageJson.description), { padding: 4, margin: 2 }));
+     console.log(boxen(chalk.magenta(packageJson.name + '\n' + packageJson.description), {
+       padding: 4,
+       margin: 2
+     }));
  
      /**
-     * @description Domain of production mode readfile
-     * @param {Function} fn function(url) { command }
-     * @param {String} url domain
-     */
+       * @description Domain of production mode readfile
+       * @param {Function} fn function(url) { command }
+       * @param {String} url domain
+       */
      var asyncAction = function(fn, url) {
        var command = ['cross-env', 'NODE_ENV=development'].concat(fn(url));
  
-       Spawn.sync('yarn', command, { stdio: 'inherit' });
+       Spawn.sync('yarn', command, {
+         stdio: 'inherit'
+       });
      }
  
-     var genarator = function(n) {
+     var genarator = function(option, n) {
        var selected = n;
  
        if (!selected) {
@@ -42,8 +51,8 @@
        }
  
        if (process.env.NODE_ENV !== 'production' && !option[selected]) {
-         console.error('❌ api-switch-cli:', 'The selected ' + chalk.bgRed(selected)
-           + ' is not found. Please confirm that you have configured it');
+         console.error('❌ api-switch-cli:', 'The selected ' + chalk.bgRed(selected) + 
+          ' is not found. Please confirm that you have configured it');
          return;
        }
  
@@ -59,7 +68,12 @@
        }
  
        if (process.env.NODE_ENV === 'production') {
-         fs.readFile(path.resolve('index.sh'), 'utf-8', function(error, data) {
+         if (!config.rootFile) {
+           console.error('❌ api-switch-cli:', 'Please configure api-switch-cli [rootFile]!');
+           return;
+         }
+         fs.readFile(path.resolve(config.rootFile), 'utf-8',
+         function(error, data) {
            var message = '';
  
            if (error) {
@@ -95,26 +109,30 @@
      }
  
      if (process.env.NODE_ENV !== 'production') {
-       inquirer.prompt([
-         {
-           type: 'list',
-           name: 'name',
-           message: '你想要在哪个环境联调呢？',
-           choices: ['dev', 'sit', 'mock'],
-           filter: function(val) {
-             return val.toLowerCase();
-           }
+       if (config.url && JSON.stringify(config.url) !== '{}') {
+         configKeys = Object.keys(config.url);
+       } else {
+         console.error('❌ api-switch-cli:', 'Please configure api-switch-cli [url]!');
+         return;
+       }
+       inquirer.prompt([{
+         type: 'list',
+         name: 'name',
+         message: '你想要在哪个环境联调呢？',
+         choices: configKeys,
+         filter: function(val) {
+           return val.toLowerCase();
          }
-       ]).then(answers => {
-         genarator(answers.name);
+       }]).then(answers => {
+         genarator(config.url, answers.name);
        });
      } else {
-       genarator('pro');
+       genarator(config.url, 'pro');
      }
    });
  
    return;
  }
  
- module.exports = apiSwitchCli
+ module.exports = apiSwitchCli;
  
