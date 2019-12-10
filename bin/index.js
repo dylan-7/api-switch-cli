@@ -103,6 +103,7 @@
          console.error('❌ api-switch-cli:', 'Please configure api-switch-cli [globals]!');
          return;
        }
+       
        inquirer.prompt([{
          type: 'list',
          name: 'name',
