@@ -14,10 +14,10 @@
  var boxen = require('boxen');
 
  /**
-    *
-    * @param {Object} option {dev: 'https:www.xx.com'}
-    * @param {Array} action [] command
-    */
+  *
+  * @param {Object} option {dev: 'https:www.xx.com'}
+  * @param {Array} action [] command
+  */
  var apiSwitchCli = function(action) {
    fs.readFile(path.resolve('package.json'), 'utf-8',
    function(error, data) {
@@ -32,10 +32,10 @@
      }));
 
      /**
-       * @description command cli
-       * @param {Function} fn function(url) { command }
-       * @param {String} url api url
-       */
+      * @description command cli
+      * @param {Function} fn function(url) { command }
+      * @param {String} url api url
+      */
      var asyncAction = function(fn, url, socket) {
        var command = ['cross-env', 'NODE_ENV=development'].concat(fn(url, socket));
 
