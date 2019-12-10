@@ -8,9 +8,9 @@ yarn add api-switch-cli -D
 ```
 
 ## Usage
-// package.json
+```javascript
+  // package.json
 
-```js
   "api-switch-cli": {
     "rootFile": ".env",
     "globals": {
