@@ -29,3 +29,4 @@ yarn add api-switch-cli -D
 
 * globals local develop API
 
+## [CHANGELOG](https://github.com/dylan-7/api-switch-cli/blob/master/CHANGELOG.md)
